@@ -361,7 +361,7 @@
             transition: max-height 0.4s ease;
         }
 
-        .work-body.open { max-height: 800px; }
+        .work-body.open { max-height: 1000px; }
 
         .work-body-inner {
             padding: 0.2rem 0 1.8rem;
@@ -410,64 +410,6 @@
 
         .work-link i { font-size: 0.6rem; }
 
-        /* Plugin Card */
-        .plugin-card {
-            background: linear-gradient(135deg, var(--bg2) 0%, var(--card) 100%);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .plugin-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent2);
-        }
-
-        .plugin-card h3 {
-            font-family: 'Fraunces', serif;
-            font-size: 1.3rem;
-            font-weight: 400;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .plugin-badge {
-            background: var(--purple);
-            color: #fff;
-            font-size: 0.6rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: 'DM Mono', monospace;
-        }
-
-        .plugin-desc {
-            color: var(--fg2);
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .plugin-stats {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .plugin-stat {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 0.7rem;
-            font-family: 'DM Mono', monospace;
-            color: var(--fg2);
-        }
-
         .plugin-actions {
             display: flex;
             gap: 1rem;
@@ -498,7 +440,7 @@
         /* ── STACK ── */
         .stack-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 0.8rem;
         }
 
@@ -508,28 +450,29 @@
             border-radius: 8px;
             padding: 0.9rem 1.1rem;
             font-family: 'DM Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.73rem;
             letter-spacing: 0.04em;
             color: var(--fg2);
             transition: border-color 0.2s, color 0.2s;
+            word-break: break-word;
+            line-height: 1.4;
         }
 
         .stack-item:hover { border-color: var(--accent2); color: var(--fg); }
 
         /* ── EXPERIENCE ── */
-        .exp-block {
-            margin-bottom: 0;
-        }
+        .exp-block { margin-bottom: 0; }
 
         .exp-item {
             display: grid;
-            grid-template-columns: 200px 1fr;
+            grid-template-columns: 220px 1fr;
             gap: 3rem;
             padding: 2.5rem 0;
             border-top: 1px solid var(--border);
         }
 
         .exp-item:last-child { border-bottom: 1px solid var(--border); }
+
         .exp-company {
             font-family: 'Fraunces', serif;
             font-size: 1rem;
@@ -552,22 +495,40 @@
             font-weight: 300;
         }
 
-        .exp-right ul li {
-            color: var(--fg2);
-            font-size: 0.9rem;
-            font-weight: 300;
-            line-height: 1.7;
-            padding-left: 1rem;
-            position: relative;
-            margin-bottom: 0.5rem;
+        /* Enhanced experience bullets — narrative prose style */
+        .exp-right {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
         }
 
-        .exp-right ul li::before {
-            content: '—';
+        .exp-entry {
+            padding-left: 1.1rem;
+            border-left: 1px solid var(--border);
+            position: relative;
+        }
+
+        .exp-entry::before {
+            content: '';
             position: absolute;
-            left: -0.5rem;
-            color: var(--accent2);
-            font-size: 0.75rem;
+            left: -3px;
+            top: 0.55em;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent2);
+        }
+
+        .exp-entry p {
+            color: var(--fg2);
+            font-size: 0.88rem;
+            font-weight: 300;
+            line-height: 1.75;
+        }
+
+        .exp-entry strong {
+            color: var(--fg);
+            font-weight: 500;
         }
 
         /* ── ABOUT ── */
@@ -596,9 +557,7 @@
             font-weight: 300;
         }
 
-        .about-aside {
-            padding-top: 0.5rem;
-        }
+        .about-aside { padding-top: 0.5rem; }
 
         .aside-label {
             font-family: 'DM Mono', monospace;
@@ -675,12 +634,28 @@
         .reveal.on { opacity: 1; transform: none; }
 
         /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .exp-item {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .hero h1 { font-size: 3.2rem; }
-            .exp-item { grid-template-columns: 1fr; gap: 1rem; }
             .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-            .work-body-inner { grid-template-columns: 1fr; }
+            .stack-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            .contact-row { gap: 1.8rem; }
+            .contact-link { font-size: 1.2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 1.2rem; }
+            .hero { padding: 0 0 60px; }
+            .stack-grid { grid-template-columns: repeat(2, 1fr); }
+            .work-achievements { gap: 0.4rem; }
+            .achievement-badge { font-size: 0.65rem; padding: 0.25rem 0.6rem; }
         }
     </style>
 </head>
@@ -735,7 +710,7 @@
 
             <div class="work-table reveal">
 
-                <!-- Woo Order Archive Manager - NEW -->
+                <!-- Woo Order Archive Manager -->
                 <div class="work-row open" data-row>
                     <div class="work-header">
                         <div class="work-header-left">
@@ -746,40 +721,42 @@
                     </div>
                     <div class="work-body open">
                         <div class="work-body-inner">
-                            <p>A professional WordPress plugin that archives old WooCommerce orders into separate database tables — keeping live stores fast without losing any order data. Built with PHP 8.2, MySQL transactions, and batch processing for high-scale stores.</p>
+                            <p>WooCommerce stores slow down as order history grows — not because the store is big, but because everything lives in the same tables. This plugin solves that by migrating old orders into a dedicated set of archive tables, keeping the live database lean while preserving every record. Built on PHP 8.2 with full MySQL transaction support, it processes orders in configurable batches so large migrations don't time out or lock tables. A dry-run mode lets store owners preview what will be archived before anything moves — critical for production trust. The onboarding wizard makes first-time setup approachable without touching code.</p>
                             <div class="work-achievements">
                                 <span class="achievement-badge">7 archive tables</span>
                                 <span class="achievement-badge">Transaction safety</span>
                                 <span class="achievement-badge">Dry-run mode</span>
-                                <span class="achievement-badge">HPOS ready</span>
+                                <span class="achievement-badge">Batch processing</span>
                                 <span class="achievement-badge">Onboarding wizard</span>
+                                <span class="achievement-badge">WordPress.org ready</span>
                             </div>
                             <div class="plugin-actions">
                                 <a href="https://github.com/anandu39/woo-order-archive-manager" target="_blank" class="plugin-btn"><i class="fa-brands fa-github"></i> GitHub</a>
-                                <a href="https://anandu39.github.io/Anandu-Ravikumar/woo-order-archive-manager" target="_blank" class="plugin-btn"><i class="fa-solid fa-globe"></i> Plugin Page</a>
+                                <a href="https://anandu39.github.io/woo-order-archive-manager" target="_blank" class="plugin-btn"><i class="fa-solid fa-globe"></i> Plugin Page</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Multi-Biometric Voter Fraud Detection - NEW -->
+                <!-- Multi-Biometric Voter Fraud Detection -->
                 <div class="work-row" data-row>
                     <div class="work-header">
                         <div class="work-header-left">
                             <span class="work-title">Multi-Biometric Voter Fraud Detection</span>
-                            <span class="work-tag"><i class="fa-solid fa-fingerprint"></i> Python · Django · Biometrics</span>
+                            <span class="work-tag"><i class="fa-solid fa-fingerprint"></i> Python · Flask · Biometrics</span>
                         </div>
                         <div class="toggle-icon"><i class="fa-solid fa-plus"></i></div>
                     </div>
                     <div class="work-body">
                         <div class="work-body-inner">
-                            <p>A multi-biometric voter authentication system that prevents electoral fraud by capturing and matching iris, fingerprint, and facial recognition data. Voters are registered with their biometric data stored securely, and at the time of voting, live captures are matched against the database to verify identity and prevent duplicate voting.</p>
+                            <p>Electoral fraud is hard to catch when identity verification is a single point of failure. This system layers three independent biometric checks — iris pattern, fingerprint, and facial recognition — so a voter must pass all three before a ballot is counted. Built with Python and Flask, the backend captures live biometric data at voting time and matches it against registered records in real time. Each modality runs independently, meaning a false positive on one doesn't grant access. Duplicate voting is caught at the identity layer, not after the fact.</p>
                             <div class="work-achievements">
+                                <span class="achievement-badge">Triple-modal verification</span>
                                 <span class="achievement-badge">Iris recognition</span>
                                 <span class="achievement-badge">Fingerprint matching</span>
                                 <span class="achievement-badge">Face detection</span>
                                 <span class="achievement-badge">Duplicate vote prevention</span>
-                                <span class="achievement-badge">Django REST framework</span>
+                                <span class="achievement-badge">Flask REST API</span>
                             </div>
                             <div class="plugin-actions">
                                 <a href="https://github.com/anandu39/multi-biometric-voter-fraud-detection" target="_blank" class="plugin-btn"><i class="fa-brands fa-github"></i> GitHub Repository</a>
@@ -799,12 +776,12 @@
                     </div>
                     <div class="work-body">
                         <div class="work-body-inner">
-                            <p>WooCommerce customization plugin by ThemeHigh, used by thousands of stores. I maintained and enhanced it across multiple versions, acted as product lead, and handled complex customer requirements.</p>
+                            <p>One of ThemeHigh's flagship plugins, used by thousands of active WooCommerce stores worldwide. I maintained and evolved it across multiple major versions — handling cross-plugin compatibility issues that would silently break checkout forms, integrating Google Places API for address autofill, and acting as product lead through full release cycles. Much of the real work was invisible: debugging edge cases where two plugins conflict at the same WooCommerce hook, or identifying why a conditional field rule fails only for guest checkouts. Shipped features while keeping existing installs stable.</p>
                             <div class="work-achievements">
-                                <span class="achievement-badge">Google Places API integration</span>
+                                <span class="achievement-badge">Google Places autofill</span>
                                 <span class="achievement-badge">Cross-plugin compatibility</span>
-                                <span class="achievement-badge">Real-time customer support</span>
-                                <span class="achievement-badge">Feature enhancements</span>
+                                <span class="achievement-badge">Multi-version releases</span>
+                                <span class="achievement-badge">Production edge-case fixes</span>
                             </div>
                         </div>
                     </div>
@@ -821,11 +798,12 @@
                     </div>
                     <div class="work-body">
                         <div class="work-body-inner">
-                            <p>Enterprise-level music software platform. Resolved subscription bottlenecks, fixed cron jobs, integrated EdenRemote API for license automation, and mitigated bot attacks affecting site performance.</p>
+                            <p>Hauptwerk is a high-end virtual pipe organ platform with a global subscriber base and a licensing model that runs entirely through external APIs. I came in to fix a subscription flow that was bottlenecking at renewal time — tracing the issue through WooCommerce subscription hooks, broken cron jobs, and a license sync gap between the site and EdenRemote's API. Integrated Pace Central for deposit and renewal automation, which eliminated a class of manual support tickets entirely. Also dealt with a coordinated bot attack that was hitting the site hard enough to degrade real user performance — identified the traffic pattern and implemented throttling at the application layer.</p>
                             <div class="work-achievements">
+                                <span class="achievement-badge">EdenRemote API integration</span>
+                                <span class="achievement-badge">Pace Central automation</span>
                                 <span class="achievement-badge">Bot attack mitigation</span>
-                                <span class="achievement-badge">Pace Central API integration</span>
-                                <span class="achievement-badge">Cron job optimization</span>
+                                <span class="achievement-badge">Cron job debugging</span>
                                 <span class="achievement-badge">Subscription flow fixes</span>
                             </div>
                             <a href="https://www.hauptwerk.com/" target="_blank" class="work-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit site</a>
@@ -844,11 +822,12 @@
                     </div>
                     <div class="work-body">
                         <div class="work-body-inner">
-                            <p>Built WordPress site using Elementor Free + ACF/SCF. Implemented GSAP animations for engaging frontend experience, created custom forms, and configured SMTP for transactional emails.</p>
+                            <p>Built with Elementor Free and ACF/SCF — a constraint that pushed most of the heavy lifting into custom code. Implemented GSAP-driven entrance and scroll animations for a polished, high-end feel without a page builder premium plan. Set up transactional email via SMTP with custom form handling, and configured anchor scroll offsets so nav links land exactly where they should. The goal was a site that felt designed, not assembled from blocks.</p>
                             <div class="work-achievements">
-                                <span class="achievement-badge">GSAP animations</span>
-                                <span class="achievement-badge">Custom forms with SMTP</span>
-                                <span class="achievement-badge">Elementor + ACF integration</span>
+                                <span class="achievement-badge">GSAP scroll animations</span>
+                                <span class="achievement-badge">SMTP + custom forms</span>
+                                <span class="achievement-badge">ACF / SCF integration</span>
+                                <span class="achievement-badge">Anchor scroll offset fixes</span>
                             </div>
                             <a href="https://livolab.com/" target="_blank" class="work-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit site</a>
                         </div>
@@ -860,17 +839,19 @@
                     <div class="work-header">
                         <div class="work-header-left">
                             <span class="work-title">NexaTherapy</span>
-                            <span class="work-tag"><i class="fa-brands fa-wordpress"></i> Figma to WordPress</span>
+                            <span class="work-tag"><i class="fa-brands fa-wordpress"></i> Figma to WordPress · GSAP</span>
                         </div>
                         <div class="toggle-icon"><i class="fa-solid fa-plus"></i></div>
                     </div>
                     <div class="work-body">
                         <div class="work-body-inner">
-                            <p>Healthcare landing pages built in WordPress with Elementor Free + custom code snippets. Converted Figma designs to responsive layouts with pixel-perfect accuracy.</p>
+                            <p>A healthcare landing page where the design had to carry the credibility of the brand. Converted detailed Figma designs to WordPress with Elementor Free and custom shortcodes, hitting pixel-accurate layouts including a layered GSAP hero animation with blur-to-sharp reveals and a subject cutout. Implemented GSAP ScrollTrigger sections with image crossfades and pinned scroll storytelling. Used Lenis for scroll normalization to fix animation inconsistencies between trackpad and mouse input — a subtle thing that makes a real difference on desktop.</p>
                             <div class="work-achievements">
-                                <span class="achievement-badge">Figma to WordPress</span>
-                                <span class="achievement-badge">Custom Elementor widgets</span>
-                                <span class="achievement-badge">Responsive design</span>
+                                <span class="achievement-badge">Layered GSAP hero animation</span>
+                                <span class="achievement-badge">ScrollTrigger pinning</span>
+                                <span class="achievement-badge">Lenis scroll normalization</span>
+                                <span class="achievement-badge">Pixel-accurate Figma conversion</span>
+                                <span class="achievement-badge">Custom shortcodes</span>
                             </div>
                             <a href="https://nexatherapy.com/" target="_blank" class="work-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit site</a>
                         </div>
@@ -888,11 +869,13 @@
                     </div>
                     <div class="work-body">
                         <div class="work-body-inner">
-                            <p>Migrated site from Joomla to WordPress, added multilingual support, manually translated all pages, and created blog architecture.</p>
+                            <p>Full platform migration from Joomla to WordPress — not a content import, but a proper rebuild with the structure rethought for maintainability. Set up multilingual support and manually translated all pages, which meant understanding the content well enough to translate it accurately rather than literally. Built out a blog architecture from scratch and ensured the migrated site passed on SEO signals from the old URLs. The client ended up with a site they could actually manage.</p>
                             <div class="work-achievements">
-                                <span class="achievement-badge">Full site migration</span>
+                                <span class="achievement-badge">Joomla → WordPress migration</span>
                                 <span class="achievement-badge">Multilingual setup</span>
                                 <span class="achievement-badge">Manual content translation</span>
+                                <span class="achievement-badge">SEO URL continuity</span>
+                                <span class="achievement-badge">Blog architecture</span>
                             </div>
                             <a href="https://www.pacificenergycorp.com/" target="_blank" class="work-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit site</a>
                         </div>
@@ -910,12 +893,13 @@
                     </div>
                     <div class="work-body">
                         <div class="work-body-inner">
-                            <p>Ongoing maintenance and feature development for sash-design tools and partner apps. Implemented royalty fee logic, optimized sash-app API performance, and built custom plugins for configuration.</p>
+                            <p>Ongoing maintenance and feature work across a suite of sash-design tools and partner apps. Implemented royalty fee logic that calculates and applies fees across different product configurations — a business rule with enough edge cases that it needed its own plugin rather than a hook. Optimized the sash builder API which was making redundant calls on each design change, causing noticeable lag in the configurator UI. Also dug into a checkout payment spinner failure that turned out to be an Nginx redirect intercepting WooCommerce AJAX — the kind of bug that looks like a payment gateway issue but isn't.</p>
                             <div class="work-achievements">
                                 <span class="achievement-badge">Royalty fee logic</span>
+                                <span class="achievement-badge">Sash API optimization</span>
                                 <span class="achievement-badge">Custom plugin development</span>
-                                <span class="achievement-badge">API performance optimization</span>
-                                <span class="achievement-badge">Sash builder tool enhancements</span>
+                                <span class="achievement-badge">Nginx + WooCommerce AJAX fix</span>
+                                <span class="achievement-badge">Checkout debugging</span>
                             </div>
                             <a href="https://stoles.collegewearinc.com/" target="_blank" class="work-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> View app</a>
                         </div>
@@ -941,8 +925,8 @@
                 <div class="stack-item">MySQL / InnoDB</div>
                 <div class="stack-item">JavaScript / ES6</div>
                 <div class="stack-item">Python</div>
-                <div class="stack-item">Django</div>
-                <div class="stack-item">Biometrics (Iris/Face/Fingerprint)</div>
+                <div class="stack-item">Flask</div>
+                <div class="stack-item">Biometrics</div>
                 <div class="stack-item">GSAP</div>
                 <div class="stack-item">REST APIs</div>
                 <div class="stack-item">Git / GitHub Actions</div>
@@ -975,12 +959,15 @@
                         <div class="exp-role">Software Engineer</div>
                     </div>
                     <div class="exp-right">
-                        <ul>
-                            <li>WooCommerce subscription systems and EdenRemote API integration for Hauptwerk — resolved subscription bottlenecks and cron job issues.</li>
-                            <li>License deposit and renewal automation using Pace Central API.</li>
-                            <li>Mitigated bot attacks affecting site performance and optimized API response times.</li>
-                            <li>Custom feature development and template conversions from Figma.</li>
-                        </ul>
+                        <div class="exp-entry">
+                            <p>Took on Hauptwerk's WooCommerce subscription system when renewals were failing silently — traced the issue through broken cron jobs, misaligned subscription hooks, and a sync gap with the <strong>EdenRemote API</strong>. Fixed the root cause and automated license deposit and renewal flows through the <strong>Pace Central API</strong>, removing a class of manual support tickets entirely.</p>
+                        </div>
+                        <div class="exp-entry">
+                            <p>Identified and mitigated a coordinated bot attack that was degrading site performance for real users — analysed traffic patterns and applied <strong>application-layer throttling</strong> without disrupting legitimate sessions. Optimized API response times across the licensing endpoints as part of the same effort.</p>
+                        </div>
+                        <div class="exp-entry">
+                            <p>Handled client-facing feature development and <strong>Figma-to-WordPress</strong> template conversions across multiple projects, with a focus on getting the implementation to match the design without hacking the theme.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -991,12 +978,15 @@
                         <div class="exp-role">Software Engineer / Product Lead</div>
                     </div>
                     <div class="exp-right">
-                        <ul>
-                            <li>Maintained and enhanced Checkout Field Editor (thousands of active installs) — feature planning, versioning, and cross-plugin compatibility.</li>
-                            <li>Integrated Google Places API for address autofill functionality.</li>
-                            <li>Provided real-time customer support, identifying and fixing complex edge cases.</li>
-                            <li>Acted as product lead for Checkout Field Editor — managing releases and customer requirements.</li>
-                        </ul>
+                        <div class="exp-entry">
+                            <p>Maintained and extended <strong>Checkout Field Editor</strong> across major versions — a plugin with thousands of active installs where any breaking change gets noticed fast. Most of the hard work was compatibility: WooCommerce updates the checkout flow, other plugins hook into the same filters, and edge cases multiply. Kept it stable through all of it.</p>
+                        </div>
+                        <div class="exp-entry">
+                            <p>Integrated <strong>Google Places API</strong> for address autofill — involved mapping the Places response to WooCommerce billing and shipping fields accurately across different locales, not just wiring up the autocomplete dropdown.</p>
+                        </div>
+                        <div class="exp-entry">
+                            <p>Acted as <strong>product lead</strong> through full release cycles — planning features, writing specs, handling customer escalations, and making prioritization calls when requirements conflicted. Worked directly with users to diagnose complex edge cases in production environments where replication wasn't always possible.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -1007,11 +997,9 @@
                         <div class="exp-role">Intern</div>
                     </div>
                     <div class="exp-right">
-                        <ul>
-                            <li>Learned basics of Python programming language, different types of datatypes and their usage.</li>
-                            <li>Learned Django framework by building an internal project as part of self-learning.</li>
-                            <li>Understood endpoints, routes, and different Python libraries used in Django development.</li>
-                        </ul>
+                        <div class="exp-entry">
+                            <p>Learned Python fundamentals and built an internal project using the <strong>Django framework</strong> — endpoints, routing, and integrating third-party Python libraries. First exposure to backend web development in a structured team environment.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -1116,8 +1104,9 @@
             const isOpen = row.classList.contains('open');
             document.querySelectorAll('[data-row]').forEach(r => {
                 r.classList.remove('open');
-                r.querySelector('.work-body').classList.remove('open');
-                r.querySelector('.work-body').style.maxHeight = null;
+                const b = r.querySelector('.work-body');
+                b.classList.remove('open');
+                b.style.maxHeight = null;
             });
             if (!isOpen) {
                 row.classList.add('open');
