@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Woo Order Archive Manager — by Anandu Ravikumar</title>
+  <meta name="description" content="Archive old WooCommerce orders into separate database tables to keep your store fast without losing any data." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%237c5cfc'/%3E%3Ctext x='50' y='68' font-size='45' text-anchor='middle' fill='white' font-family='monospace' font-weight='bold'%3E%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f0f13;
+      --bg2:       #17171e;
+      --bg3:       #1e1e28;
+      --border:    rgba(255,255,255,0.08);
+      --border-hi: rgba(255,255,255,0.14);
+      --purple:    #7c5cfc;
+      --purple-lo: rgba(124,92,252,0.12);
+      --purple-mid:#9b7fff;
+      --teal:      #00d4aa;
+      --teal-lo:   rgba(0,212,170,0.10);
+      --amber:     #f5a623;
+      --amber-lo:  rgba(245,166,35,0.10);
+      --red:       #ff5c5c;
+      --text:      #e8e8f0;
+      --text2:     #9898b0;
+      --text3:     #5a5a72;
+      --mono:      'JetBrains Mono', monospace;
+      --sans:      'Inter', system-ui, sans-serif;
+      --radius:    10px;
+      --radius-lg: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,15,19,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo-icon {
+      width: 28px; height: 28px;
+      background: var(--purple);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo-icon svg { width: 16px; height: 16px; fill: #fff; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text2);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color .15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--purple);
+      color: #fff !important;
+      padding: 6px 16px;
+      border-radius: 7px;
+      font-weight: 500;
+      font-size: 13px !important;
+    }
+    .nav-cta:hover { background: var(--purple-mid) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 5rem 2rem 4rem;
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--purple-lo);
+      border: 1px solid rgba(124,92,252,0.3);
+      color: var(--purple-mid);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      font-family: var(--mono);
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--purple-mid);
+      border-radius: 50%;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 1.25rem;
+    }
+    h1 span { color: var(--purple-mid); }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text2);
+      max-width: 560px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all .15s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--purple-mid); transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text2);
+      border: 1px solid var(--border-hi);
+    }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.25); background: var(--bg3); }
+
+    /* ── STATS ROW ── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      max-width: 680px;
+      margin: 3rem auto 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg2);
+    }
+    .stat {
+      flex: 1;
+      padding: 1.25rem 1rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-val {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #fff;
+      font-family: var(--mono);
+    }
+    .stat-val span { color: var(--purple-mid); }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text3);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--purple-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+    h2 {
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    .section-sub {
+      color: var(--text2);
+      max-width: 520px;
+      margin-bottom: 3rem;
+      line-height: 1.7;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .step {
+      background: var(--bg2);
+      padding: 1.75rem;
+    }
+    .step-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--purple-mid);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+    .step h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .step p {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+    .step-icon {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 17px;
+    }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .feature-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: border-color .2s;
+    }
+    .feature-card:hover { border-color: var(--border-hi); }
+    .feature-icon {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 1rem;
+    }
+    .icon-purple { background: var(--purple-lo); }
+    .icon-teal   { background: var(--teal-lo); }
+    .icon-amber  { background: var(--amber-lo); }
+    .feature-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    .feature-card p {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* ── SCREENSHOTS ── */
+    .screenshots-note {
+      background: var(--bg2);
+      border: 1px dashed var(--border-hi);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      text-align: center;
+      color: var(--text3);
+      font-size: 13px;
+    }
+    .screenshots-note p { margin-bottom: 0.5rem; }
+    .screenshots-note strong { color: var(--text2); display: block; font-size: 15px; margin-bottom: 0.5rem; }
+
+    /* ── INSTALL ── */
+    .install-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 640px) { .install-grid { grid-template-columns: 1fr; } }
+    .install-steps ol {
+      list-style: none;
+      counter-reset: steps;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .install-steps li {
+      counter-increment: steps;
+      display: flex;
+      gap: 16px;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+    .install-steps li:last-child { border-bottom: none; }
+    .install-steps li::before {
+      content: counter(steps);
+      min-width: 26px; height: 26px;
+      background: var(--purple-lo);
+      color: var(--purple-mid);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .install-steps li strong { color: var(--text); }
+    .req-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+    .req-card h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+      font-family: var(--mono);
+    }
+    .req-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .req-row:last-child { border-bottom: none; }
+    .req-row span:first-child { color: var(--text2); }
+    .req-val {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--teal);
+      background: var(--teal-lo);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* ── CHANGELOG ── */
+    .changelog {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .changelog-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .version-badge {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--purple-lo);
+      color: var(--purple-mid);
+      border: 1px solid rgba(124,92,252,0.25);
+      padding: 3px 10px;
+      border-radius: 5px;
+    }
+    .release-date {
+      font-size: 12px;
+      color: var(--text3);
+      font-family: var(--mono);
+    }
+    .release-tag {
+      margin-left: auto;
+      font-size: 11px;
+      color: var(--teal);
+      background: var(--teal-lo);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .changelog-body {
+      padding: 1.25rem 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+    .cl-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.5;
+    }
+    .cl-dot {
+      width: 5px; height: 5px;
+      background: var(--purple);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* ── GITHUB ACTIONS ── */
+    .workflow-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .workflow-titlebar {
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f56; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #27c93f; }
+    .workflow-filename {
+      margin-left: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text3);
+    }
+    pre {
+      margin: 0;
+      padding: 1.5rem;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: #c8c8e0;
+    }
+    .kw   { color: #c678dd; }
+    .str  { color: #98c379; }
+    .key  { color: #61afef; }
+    .com  { color: #5c6370; font-style: italic; }
+    .num  { color: #d19a66; }
+
+    .workflow-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 1.5rem;
+    }
+    .wf-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      font-size: 13px;
+    }
+    .wf-card strong { color: #fff; display: block; margin-bottom: 4px; font-size: 13px; }
+    .wf-card span { color: var(--text2); }
+
+    /* ── FAQ ── */
+    details {
+      border-bottom: 1px solid var(--border);
+    }
+    details:first-of-type { border-top: 1px solid var(--border); }
+    summary {
+      padding: 1.1rem 0;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: '+';
+      color: var(--text3);
+      font-size: 18px;
+      font-weight: 300;
+      flex-shrink: 0;
+      transition: transform .2s;
+    }
+    details[open] summary::after { transform: rotate(45deg); }
+    .faq-body {
+      padding-bottom: 1.1rem;
+      font-size: 13.5px;
+      color: var(--text2);
+      line-height: 1.7;
+      max-width: 680px;
+    }
+    .faq-body code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--bg3);
+      color: var(--purple-mid);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .footer-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-left { font-size: 13px; color: var(--text3); }
+    .footer-left a { color: var(--text2); text-decoration: none; }
+    .footer-left a:hover { color: var(--text); }
+    .footer-right { display: flex; gap: 1.25rem; }
+    .footer-right a { color: var(--text3); text-decoration: none; font-size: 13px; }
+    .footer-right a:hover { color: var(--text2); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; }
+      section { padding: 3.5rem 1.25rem; }
+      .stats { flex-direction: column; border-radius: var(--radius); }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat:last-child { border-bottom: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+
+    /* Font Awesome icon styling */
+    .step-icon i, .feature-icon i {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 16 16"><path d="M3 2h10a1 1 0 011 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1zm0 5h10a1 1 0 011 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1V8a1 1 0 011-1zm0 5h6a1 1 0 011 1v1a1 1 0 01-1 1H3a1 1 0 01-1-1v-1a1 1 0 011-1z"/></svg>
+    </div>
+    WOAM
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#changelog">Changelog</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="https://github.com/anandu39/woo-order-archive-manager" class="nav-cta" target="_blank" rel="noopener">GitHub <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">v1.0.0 — Initial Release</div>
+  <h1>Your WooCommerce database,<br><span>finally lean</span></h1>
+  <p class="hero-sub">
+    Woo Order Archive Manager moves old orders out of your live tables into dedicated archive tables — using transactions, verification, and dry-run safety. Your store gets faster. Your data stays safe.
+  </p>
+  <div class="hero-actions">
+    <a href="https://github.com/anandu39/woo-order-archive-manager/releases/latest" class="btn btn-primary" target="_blank" rel="noopener">
+      <i class="fa-solid fa-download"></i> Download latest release
+    </a>
+    <a href="https://github.com/anandu39/woo-order-archive-manager" class="btn btn-ghost" target="_blank" rel="noopener">
+      <i class="fa-brands fa-github"></i> View on GitHub
+    </a>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val">7 <span>tables</span></div>
+      <div class="stat-label">Archive tables created</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">50 <span>orders</span></div>
+      <div class="stat-label">Default batch size</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val"><span>0</span> data loss</div>
+      <div class="stat-label">Transactional safety</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">PHP <span>8.2</span></div>
+      <div class="stat-label">Minimum required</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="section-label">How it works</div>
+  <h2>Archive with confidence, not anxiety</h2>
+  <p class="section-sub">Every archive operation runs inside a database transaction. Nothing is deleted from your live tables until the copy is verified complete.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon icon-purple"><i class="fa-solid fa-sliders-h"></i></div>
+      <h3>Set your filters</h3>
+      <p>Choose which order statuses to archive and set a date cutoff. Run a dry-run first to see exactly how many orders match.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon icon-teal"><i class="fa-solid fa-lock"></i></div>
+      <h3>Copy inside a transaction</h3>
+      <p>Orders are copied row by row into archive tables. If anything fails mid-copy, the transaction rolls back automatically — your original data is untouched.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon icon-purple"><i class="fa-solid fa-check-circle"></i></div>
+      <h3>Verify before deleting</h3>
+      <p>Row counts are checked between source and archive before a single live row is removed. No match — no delete.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-icon icon-teal"><i class="fa-solid fa-rotate-left"></i></div>
+      <h3>Restore anytime</h3>
+      <p>Archived orders can be restored back to WooCommerce at any time, with original IDs, meta, items, notes, and refunds intact.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">Features</div>
+  <h2>Everything included. No Pro upsell.</h2>
+  <p class="section-sub">All features ship in the free plugin. No premium tier, no feature gates.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon icon-purple"><i class="fa-solid fa-database"></i></div>
+      <h3>Dedicated archive tables</h3>
+      <p>Orders move to 7 separate archive tables — not just a status change. Live tables stay lean.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-teal"><i class="fa-solid fa-arrows-spin"></i></div>
+      <h3>Full restore support</h3>
+      <p>Restore any archived order back to WooCommerce with its original ID, meta, line items, notes, and refunds.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-purple"><i class="fa-solid fa-flask"></i></div>
+      <h3>Dry-run mode</h3>
+      <p>Run the full archive process inside a transaction, then roll it back. Preview exactly what would happen — nothing is changed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-amber"><i class="fa-solid fa-chart-simple"></i></div>
+      <h3>Database visualiser</h3>
+      <p>See the real size of your WooCommerce order tables and how much space archiving will recover.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-teal"><i class="fa-solid fa-heart"></i></div>
+      <h3>Archive health score</h3>
+      <p>A weighted score (0–100) across DB size, archive coverage, table integrity, and growth rate — cached and refreshed automatically.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-purple"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <h3>Integrity checker</h3>
+      <p>Scans archive tables for orphaned rows — meta, items, or notes referencing orders that no longer exist.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-amber"><i class="fa-solid fa-bell"></i></div>
+      <h3>Subscription protection</h3>
+      <p>Orders linked to active WooCommerce Subscriptions are automatically skipped during archiving.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-teal"><i class="fa-solid fa-chart-line"></i></div>
+      <h3>Growth forecast</h3>
+      <p>6 and 12-month database size projections based on your actual monthly growth rate.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-purple"><i class="fa-solid fa-list"></i></div>
+      <h3>Activity log</h3>
+      <p>Every archive, restore, and delete is recorded with timestamps, order counts, and status — including dry runs.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-amber"><i class="fa-solid fa-bolt"></i></div>
+      <h3>Batch processing</h3>
+      <p>Processes 50 orders per batch by default. Adjustable via filter for fast or shared hosting environments.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-teal"><i class="fa-solid fa-compass"></i></div>
+      <h3>Onboarding wizard</h3>
+      <p>First-run scan of your store: total orders, archive candidates, estimated DB savings — before you touch anything.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-purple"><i class="fa-solid fa-trash-can"></i></div>
+      <h3>Permanent deletion</h3>
+      <p>Permanently delete archived orders when they're no longer needed — with the same transaction safety as archiving.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- SCREENSHOTS -->
+<section id="screenshots">
+  <div class="section-label">Screenshots</div>
+  <h2>See it in action</h2>
+  <p class="section-sub">Screenshots will be added here once the plugin is deployed and running on a live store.</p>
+
+  <div class="screenshots-note">
+    <strong><i class="fa-solid fa-camera"></i> Screenshots coming soon</strong>
+    <p>Overview tab · Archive Orders flow · Archived Orders tab · Activity log</p>
+    <p style="margin-top:0.75rem; font-size:12px;">In the meantime, <a href="https://github.com/anandu39/woo-order-archive-manager" style="color:var(--purple-mid);" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> view the repository</a> for code and documentation.</p>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- INSTALL -->
+<section id="install">
+  <div class="section-label">Installation</div>
+  <h2>Up and running in minutes</h2>
+  <p class="section-sub">No configuration required after activation. The onboarding wizard walks you through your first archive.</p>
+
+  <div class="install-grid">
+    <div class="install-steps">
+      <ol>
+        <li><div><strong><i class="fa-solid fa-download"></i> Download the ZIP</strong> from the GitHub Releases page or the WordPress plugin directory.</div></li>
+        <li><div><strong><i class="fa-solid fa-upload"></i> Upload the ZIP</strong> — Go to <strong>Plugins → Add New → Upload Plugin</strong> in your WordPress admin.</div></li>
+        <li><div><strong><i class="fa-solid fa-plug"></i> Activate Plugin</strong> — Upload the ZIP file and click <strong>Activate Plugin</strong>.</div></li>
+        <li><div><strong><i class="fa-solid fa-folder-open"></i> Navigate</strong> — Go to <strong>Order Archive</strong> in the WordPress admin sidebar.</div></li>
+        <li><div><strong><i class="fa-solid fa-wand-magic"></i> Onboarding wizard</strong> scans your store and shows you how many orders are ready to archive.</div></li>
+        <li><div><strong><i class="fa-solid fa-archive"></i> Run archive</strong> — Go to the <strong>Archive Orders</strong> tab, set your filters, run a dry run, then archive.</div></li>
+      </ol>
+    </div>
+    <div class="req-card">
+      <h3><i class="fa-solid fa-list-check"></i> Requirements</h3>
+      <div class="req-row"><span>WordPress</span><span class="req-val">5.0+</span></div>
+      <div class="req-row"><span>WooCommerce</span><span class="req-val">Latest</span></div>
+      <div class="req-row"><span>PHP</span><span class="req-val">8.2+</span></div>
+      <div class="req-row"><span>MySQL engine</span><span class="req-val">InnoDB</span></div>
+      <div class="req-row"><span>HPOS</span><span class="req-val" style="color:var(--amber);background:var(--amber-lo);">Legacy only</span></div>
+      <div class="req-row"><span>Multisite</span><span class="req-val" style="color:var(--amber);background:var(--amber-lo);">Untested</span></div>
+
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);">
+        <p style="font-size:12px;color:var(--text3);line-height:1.6;"><i class="fa-solid fa-circle-info"></i> InnoDB is required for transaction support. Most WordPress hosts use InnoDB by default. Check your table engine in phpMyAdmin if unsure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- CHANGELOG -->
+<section id="changelog">
+  <div class="section-label">Changelog</div>
+  <h2>What's new</h2>
+  <p class="section-sub">Full history of changes across every release.</p>
+
+  <div class="changelog">
+    <div class="changelog-header">
+      <span class="version-badge">v1.0.0</span>
+      <span class="release-date">June 2026</span>
+      <span class="release-tag"><i class="fa-solid fa-rocket"></i> Initial release</span>
+    </div>
+    <div class="changelog-body">
+      <div class="cl-item"><div class="cl-dot"></div><span>Archive, restore, and permanently delete WooCommerce orders</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Dry run mode with full transaction rollback</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Archive verification before any live data is deleted</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Refund post archiving and restoration</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>WooCommerce Subscriptions guard</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Analytics lookup table cleanup on archive</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Database visualiser showing table sizes</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Archive health score and integrity checker</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Batch processing with configurable batch size</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Full activity log</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Onboarding wizard for first-time users</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Real-time savings estimation</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Growth forecast (6 and 12 month projections)</span></div>
+      <div class="cl-item"><div class="cl-dot"></div><span>Health score caching via WP Cron (6hr refresh)</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- GITHUB ACTIONS -->
+<section id="actions">
+  <div class="section-label">GitHub Actions</div>
+  <h2>Automated releases, clean every time</h2>
+  <p class="section-sub">Push a version tag and the workflow builds, strips dev files, and publishes a release-ready ZIP to GitHub Releases automatically.</p>
+
+  <div class="workflow-box">
+    <div class="workflow-titlebar">
+      <span class="dot dot-r"></span>
+      <span class="dot dot-y"></span>
+      <span class="dot dot-g"></span>
+      <span class="workflow-filename"><i class="fa-brands fa-github"></i> .github/workflows/release.yml</span>
+    </div>
+<pre><span class="com"># Triggered by version tags: git tag v1.0.0 &amp;&amp; git push --tags</span>
+<span class="key">on</span>:
+  <span class="key">push</span>:
+    <span class="key">tags</span>: [<span class="str">'v*'</span>]
+
+<span class="key">jobs</span>:
+  <span class="key">build</span>:
+    <span class="key">runs-on</span>: <span class="str">ubuntu-latest</span>
+    <span class="key">steps</span>:
+      - <span class="key">uses</span>: <span class="str">actions/checkout@v4</span>
+
+      - <span class="key">name</span>: <span class="str">Install production dependencies</span>
+        <span class="key">run</span>: <span class="str">composer install --no-dev --optimize-autoloader</span>
+
+      - <span class="key">name</span>: <span class="str">Build clean ZIP (no .git, no dev files)</span>
+        <span class="key">run</span>: |
+          rsync -av ./ build/woo-order-archive-manager \
+            --exclude build --exclude .git --exclude .github \
+            --exclude tests --exclude composer.json
+          cd build &amp;&amp; zip -r plugin.zip woo-order-archive-manager
+
+      - <span class="key">name</span>: <span class="str">Publish GitHub Release</span>
+        <span class="key">uses</span>: <span class="str">softprops/action-gh-release@v2</span>
+        <span class="key">with</span>:
+          <span class="key">files</span>: <span class="str">build/plugin.zip</span>
+          <span class="com"># tags with 'beta'/'alpha'/'rc' auto-mark as pre-release</span>
+          <span class="key">prerelease</span>: <span class="str">${{ contains(github.ref_name, 'beta') }}</span></pre>
+  </div>
+
+  <div class="workflow-features">
+    <div class="wf-card">
+      <strong><i class="fa-solid fa-tag"></i> Auto pre-release detection</strong>
+      <span>Tags containing <code style="font-family:var(--mono);font-size:11px;background:var(--bg3);color:var(--purple-mid);padding:1px 5px;border-radius:3px;">beta</code>, <code style="font-family:var(--mono);font-size:11px;background:var(--bg3);color:var(--purple-mid);padding:1px 5px;border-radius:3px;">alpha</code>, or <code style="font-family:var(--mono);font-size:11px;background:var(--bg3);color:var(--purple-mid);padding:1px 5px;border-radius:3px;">rc</code> are marked pre-release automatically.</span>
+    </div>
+    <div class="wf-card">
+      <strong><i class="fa-solid fa-clean"></i> No .git in the ZIP</strong>
+      <span>The rsync excludes .git, .github, and dev config — only production files ship to users.</span>
+    </div>
+    <div class="wf-card">
+      <strong><i class="fa-solid fa-gauge-high"></i> Optimized autoloader</strong>
+      <span>composer install runs with <code style="font-family:var(--mono);font-size:11px;background:var(--bg3);color:var(--purple-mid);padding:1px 5px;border-radius:3px;">--no-dev --optimize-autoloader</code> for faster class loading.</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-label">FAQ</div>
+  <h2>Common questions</h2>
+  <p class="section-sub" style="margin-bottom:1.5rem">Things people ask before running their first archive.</p>
+
+  <details>
+    <summary><i class="fa-regular fa-chart-bar"></i> Will archiving break my WooCommerce reports?</summary>
+    <div class="faq-body">The plugin removes analytics cache rows from <code>wp_wc_order_stats</code> and related lookup tables when archiving. WooCommerce can regenerate these from order data via Analytics → Status → Re-import. Reports will reflect the archive once regenerated.</div>
+  </details>
+  <details>
+    <summary><i class="fa-solid fa-rotate-left"></i> Can I restore an order after archiving it?</summary>
+    <div class="faq-body">Yes. Go to the Archived Orders tab, select Restore, and run the batch. The order comes back with its original ID, meta, items, notes, and refunds fully intact.</div>
+  </details>
+  <details>
+    <summary><i class="fa-solid fa-triangle-exclamation"></i> What happens if archiving fails halfway through?</summary>
+    <div class="faq-body">Each order is wrapped in a database transaction. If any step fails, the transaction rolls back for that order and it stays in the live tables unchanged. The activity log records the error with a message.</div>
+  </details>
+  <details>
+    <summary><i class="fa-solid fa-repeat"></i> Does this work with WooCommerce Subscriptions?</summary>
+    <div class="faq-body">Yes. The plugin detects active subscriptions and skips any order that is a renewal order or has an active subscription attached to it. This prevents breaking the billing chain.</div>
+  </details>
+  <details>
+    <summary><i class="fa-solid fa-server"></i> Is HPOS supported?</summary>
+    <div class="faq-body">Not in version 1.0. If HPOS is enabled on your store, the plugin shows an admin notice and stays inactive. HPOS support is on the roadmap for a future release.</div>
+  </details>
+  <details>
+    <summary><i class="fa-solid fa-flask"></i> What is dry run mode?</summary>
+    <div class="faq-body">Dry run runs the full copy and verification process inside a transaction, then rolls everything back instead of committing. No data is changed. The activity log records the result as a dry run so you can see exactly what would have happened.</div>
+  </details>
+  <details>
+    <summary><i class="fa-solid fa-sliders"></i> Can I change the batch size?</summary>
+    <div class="faq-body">Yes. Add this to your <code>functions.php</code> or a custom plugin:<br><br><code>add_filter( 'hw_woam_batch_size', function() { return 100; } );</code><br><br>The default is 50 orders per batch. Increase on fast servers, decrease on shared hosting if you see timeouts.</div>
+  </details>
+  <details>
+    <summary><i class="fa-solid fa-network-wired"></i> Does it support multisite?</summary>
+    <div class="faq-body">Not tested on multisite in version 1.0. Each site in a network has its own table prefix, so the plugin should create separate archive tables per site, but this has not been verified.</div>
+  </details>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      Built by <a href="https://anandu39.github.io/Anandu-Ravikumar/" target="_blank" rel="noopener"><i class="fa-solid fa-code"></i> Anandu Ravikumar</a> &nbsp;·&nbsp; GPL-2.0-or-later
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/anandu39/woo-order-archive-manager" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+      <a href="https://profiles.wordpress.org/ananduravi/" target="_blank" rel="noopener"><i class="fa-brands fa-wordpress"></i> WordPress.org</a>
+      <a href="https://anandu39.github.io/Anandu-Ravikumar/" target="_blank" rel="noopener"><i class="fa-solid fa-user"></i> Portfolio</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
