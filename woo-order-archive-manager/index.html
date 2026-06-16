@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Woo Order Archive Manager — by Anandu Ravikumar</title>
   <meta name="description" content="Archive old WooCommerce orders into separate database tables to keep your store fast without losing any data." />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%237c5cfc'/%3E%3Ctext x='50' y='68' font-size='45' text-anchor='middle' fill='white' font-family='monospace' font-weight='bold'%3E%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -273,9 +271,7 @@
     .step-icon {
       width: 36px; height: 36px;
       border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       margin-bottom: 1rem;
       font-size: 17px;
     }
@@ -297,9 +293,7 @@
     .feature-icon {
       width: 38px; height: 38px;
       border-radius: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 18px;
       margin-bottom: 1rem;
     }
@@ -605,11 +599,6 @@
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; }
     }
-
-    /* Font Awesome icon styling */
-    .step-icon i, .feature-icon i {
-      font-size: 18px;
-    }
   </style>
 </head>
 <body>
@@ -628,7 +617,7 @@
     <li><a href="#install">Install</a></li>
     <li><a href="#changelog">Changelog</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="https://github.com/anandu39/woo-order-archive-manager" class="nav-cta" target="_blank" rel="noopener">GitHub <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+    <li><a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager" class="nav-cta" target="_blank" rel="noopener">GitHub ↗</a></li>
   </ul>
 </nav>
 
@@ -640,11 +629,11 @@
     Woo Order Archive Manager moves old orders out of your live tables into dedicated archive tables — using transactions, verification, and dry-run safety. Your store gets faster. Your data stays safe.
   </p>
   <div class="hero-actions">
-    <a href="https://github.com/anandu39/woo-order-archive-manager/releases/latest" class="btn btn-primary" target="_blank" rel="noopener">
-      <i class="fa-solid fa-download"></i> Download latest release
+    <a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager/releases/latest" class="btn btn-primary" target="_blank" rel="noopener">
+      ↓ Download latest release
     </a>
-    <a href="https://github.com/anandu39/woo-order-archive-manager" class="btn btn-ghost" target="_blank" rel="noopener">
-      <i class="fa-brands fa-github"></i> View on GitHub
+    <a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager" class="btn btn-ghost" target="_blank" rel="noopener">
+      View on GitHub
     </a>
   </div>
 
@@ -679,25 +668,25 @@
   <div class="steps">
     <div class="step">
       <div class="step-num">01</div>
-      <div class="step-icon icon-purple"><i class="fa-solid fa-sliders-h"></i></div>
+      <div class="step-icon icon-purple">📋</div>
       <h3>Set your filters</h3>
       <p>Choose which order statuses to archive and set a date cutoff. Run a dry-run first to see exactly how many orders match.</p>
     </div>
     <div class="step">
       <div class="step-num">02</div>
-      <div class="step-icon icon-teal"><i class="fa-solid fa-lock"></i></div>
+      <div class="step-icon icon-teal">🔒</div>
       <h3>Copy inside a transaction</h3>
       <p>Orders are copied row by row into archive tables. If anything fails mid-copy, the transaction rolls back automatically — your original data is untouched.</p>
     </div>
     <div class="step">
       <div class="step-num">03</div>
-      <div class="step-icon icon-purple"><i class="fa-solid fa-check-circle"></i></div>
+      <div class="step-icon icon-purple">✅</div>
       <h3>Verify before deleting</h3>
       <p>Row counts are checked between source and archive before a single live row is removed. No match — no delete.</p>
     </div>
     <div class="step">
       <div class="step-num">04</div>
-      <div class="step-icon icon-teal"><i class="fa-solid fa-rotate-left"></i></div>
+      <div class="step-icon icon-teal">♻️</div>
       <h3>Restore anytime</h3>
       <p>Archived orders can be restored back to WooCommerce at any time, with original IDs, meta, items, notes, and refunds intact.</p>
     </div>
@@ -714,62 +703,62 @@
 
   <div class="features-grid">
     <div class="feature-card">
-      <div class="feature-icon icon-purple"><i class="fa-solid fa-database"></i></div>
+      <div class="feature-icon icon-purple">🗄️</div>
       <h3>Dedicated archive tables</h3>
       <p>Orders move to 7 separate archive tables — not just a status change. Live tables stay lean.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-teal"><i class="fa-solid fa-arrows-spin"></i></div>
+      <div class="feature-icon icon-teal">🔁</div>
       <h3>Full restore support</h3>
       <p>Restore any archived order back to WooCommerce with its original ID, meta, line items, notes, and refunds.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-purple"><i class="fa-solid fa-flask"></i></div>
+      <div class="feature-icon icon-purple">🧪</div>
       <h3>Dry-run mode</h3>
       <p>Run the full archive process inside a transaction, then roll it back. Preview exactly what would happen — nothing is changed.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-amber"><i class="fa-solid fa-chart-simple"></i></div>
+      <div class="feature-icon icon-amber">📊</div>
       <h3>Database visualiser</h3>
       <p>See the real size of your WooCommerce order tables and how much space archiving will recover.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-teal"><i class="fa-solid fa-heart"></i></div>
+      <div class="feature-icon icon-teal">❤️</div>
       <h3>Archive health score</h3>
       <p>A weighted score (0–100) across DB size, archive coverage, table integrity, and growth rate — cached and refreshed automatically.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-purple"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <div class="feature-icon icon-purple">🔍</div>
       <h3>Integrity checker</h3>
       <p>Scans archive tables for orphaned rows — meta, items, or notes referencing orders that no longer exist.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-amber"><i class="fa-solid fa-bell"></i></div>
+      <div class="feature-icon icon-amber">🔔</div>
       <h3>Subscription protection</h3>
       <p>Orders linked to active WooCommerce Subscriptions are automatically skipped during archiving.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-teal"><i class="fa-solid fa-chart-line"></i></div>
+      <div class="feature-icon icon-teal">📈</div>
       <h3>Growth forecast</h3>
       <p>6 and 12-month database size projections based on your actual monthly growth rate.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-purple"><i class="fa-solid fa-list"></i></div>
+      <div class="feature-icon icon-purple">🗒️</div>
       <h3>Activity log</h3>
       <p>Every archive, restore, and delete is recorded with timestamps, order counts, and status — including dry runs.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-amber"><i class="fa-solid fa-bolt"></i></div>
+      <div class="feature-icon icon-amber">⚡</div>
       <h3>Batch processing</h3>
       <p>Processes 50 orders per batch by default. Adjustable via filter for fast or shared hosting environments.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-teal"><i class="fa-solid fa-compass"></i></div>
+      <div class="feature-icon icon-teal">🧭</div>
       <h3>Onboarding wizard</h3>
       <p>First-run scan of your store: total orders, archive candidates, estimated DB savings — before you touch anything.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon icon-purple"><i class="fa-solid fa-trash-can"></i></div>
+      <div class="feature-icon icon-purple">🗑️</div>
       <h3>Permanent deletion</h3>
       <p>Permanently delete archived orders when they're no longer needed — with the same transaction safety as archiving.</p>
     </div>
@@ -785,9 +774,9 @@
   <p class="section-sub">Screenshots will be added here once the plugin is deployed and running on a live store.</p>
 
   <div class="screenshots-note">
-    <strong><i class="fa-solid fa-camera"></i> Screenshots coming soon</strong>
+    <strong>Screenshots coming soon</strong>
     <p>Overview tab · Archive Orders flow · Archived Orders tab · Activity log</p>
-    <p style="margin-top:0.75rem; font-size:12px;">In the meantime, <a href="https://github.com/anandu39/woo-order-archive-manager" style="color:var(--purple-mid);" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> view the repository</a> for code and documentation.</p>
+    <p style="margin-top:0.75rem; font-size:12px;">In the meantime, <a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager" style="color:var(--purple-mid);" target="_blank" rel="noopener">view the repository</a> for code and documentation.</p>
   </div>
 </section>
 
@@ -802,16 +791,16 @@
   <div class="install-grid">
     <div class="install-steps">
       <ol>
-        <li><div><strong><i class="fa-solid fa-download"></i> Download the ZIP</strong> from the GitHub Releases page or the WordPress plugin directory.</div></li>
-        <li><div><strong><i class="fa-solid fa-upload"></i> Upload the ZIP</strong> — Go to <strong>Plugins → Add New → Upload Plugin</strong> in your WordPress admin.</div></li>
-        <li><div><strong><i class="fa-solid fa-plug"></i> Activate Plugin</strong> — Upload the ZIP file and click <strong>Activate Plugin</strong>.</div></li>
-        <li><div><strong><i class="fa-solid fa-folder-open"></i> Navigate</strong> — Go to <strong>Order Archive</strong> in the WordPress admin sidebar.</div></li>
-        <li><div><strong><i class="fa-solid fa-wand-magic"></i> Onboarding wizard</strong> scans your store and shows you how many orders are ready to archive.</div></li>
-        <li><div><strong><i class="fa-solid fa-archive"></i> Run archive</strong> — Go to the <strong>Archive Orders</strong> tab, set your filters, run a dry run, then archive.</div></li>
+        <li><div><strong>Download the ZIP</strong> from the GitHub Releases page or the WordPress plugin directory.</div></li>
+        <li><div>Go to <strong>Plugins → Add New → Upload Plugin</strong> in your WordPress admin.</div></li>
+        <li><div>Upload the ZIP file and click <strong>Activate Plugin</strong>.</div></li>
+        <li><div>Go to <strong>Order Archive</strong> in the WordPress admin sidebar.</div></li>
+        <li><div>The onboarding wizard scans your store and shows you how many orders are ready to archive.</div></li>
+        <li><div>Go to the <strong>Archive Orders</strong> tab, set your filters, run a dry run, then archive.</div></li>
       </ol>
     </div>
     <div class="req-card">
-      <h3><i class="fa-solid fa-list-check"></i> Requirements</h3>
+      <h3>Requirements</h3>
       <div class="req-row"><span>WordPress</span><span class="req-val">5.0+</span></div>
       <div class="req-row"><span>WooCommerce</span><span class="req-val">Latest</span></div>
       <div class="req-row"><span>PHP</span><span class="req-val">8.2+</span></div>
@@ -820,7 +809,7 @@
       <div class="req-row"><span>Multisite</span><span class="req-val" style="color:var(--amber);background:var(--amber-lo);">Untested</span></div>
 
       <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);">
-        <p style="font-size:12px;color:var(--text3);line-height:1.6;"><i class="fa-solid fa-circle-info"></i> InnoDB is required for transaction support. Most WordPress hosts use InnoDB by default. Check your table engine in phpMyAdmin if unsure.</p>
+        <p style="font-size:12px;color:var(--text3);line-height:1.6;">InnoDB is required for transaction support. Most WordPress hosts use InnoDB by default. Check your table engine in phpMyAdmin if unsure.</p>
       </div>
     </div>
   </div>
@@ -838,7 +827,7 @@
     <div class="changelog-header">
       <span class="version-badge">v1.0.0</span>
       <span class="release-date">June 2026</span>
-      <span class="release-tag"><i class="fa-solid fa-rocket"></i> Initial release</span>
+      <span class="release-tag">Initial release</span>
     </div>
     <div class="changelog-body">
       <div class="cl-item"><div class="cl-dot"></div><span>Archive, restore, and permanently delete WooCommerce orders</span></div>
@@ -872,7 +861,7 @@
       <span class="dot dot-r"></span>
       <span class="dot dot-y"></span>
       <span class="dot dot-g"></span>
-      <span class="workflow-filename"><i class="fa-brands fa-github"></i> .github/workflows/release.yml</span>
+      <span class="workflow-filename">.github/workflows/release.yml</span>
     </div>
 <pre><span class="com"># Triggered by version tags: git tag v1.0.0 &amp;&amp; git push --tags</span>
 <span class="key">on</span>:
@@ -905,15 +894,15 @@
 
   <div class="workflow-features">
     <div class="wf-card">
-      <strong><i class="fa-solid fa-tag"></i> Auto pre-release detection</strong>
+      <strong>Auto pre-release detection</strong>
       <span>Tags containing <code style="font-family:var(--mono);font-size:11px;background:var(--bg3);color:var(--purple-mid);padding:1px 5px;border-radius:3px;">beta</code>, <code style="font-family:var(--mono);font-size:11px;background:var(--bg3);color:var(--purple-mid);padding:1px 5px;border-radius:3px;">alpha</code>, or <code style="font-family:var(--mono);font-size:11px;background:var(--bg3);color:var(--purple-mid);padding:1px 5px;border-radius:3px;">rc</code> are marked pre-release automatically.</span>
     </div>
     <div class="wf-card">
-      <strong><i class="fa-solid fa-clean"></i> No .git in the ZIP</strong>
+      <strong>No .git in the ZIP</strong>
       <span>The rsync excludes .git, .github, and dev config — only production files ship to users.</span>
     </div>
     <div class="wf-card">
-      <strong><i class="fa-solid fa-gauge-high"></i> Optimized autoloader</strong>
+      <strong>Optimized autoloader</strong>
       <span>composer install runs with <code style="font-family:var(--mono);font-size:11px;background:var(--bg3);color:var(--purple-mid);padding:1px 5px;border-radius:3px;">--no-dev --optimize-autoloader</code> for faster class loading.</span>
     </div>
   </div>
@@ -928,35 +917,35 @@
   <p class="section-sub" style="margin-bottom:1.5rem">Things people ask before running their first archive.</p>
 
   <details>
-    <summary><i class="fa-regular fa-chart-bar"></i> Will archiving break my WooCommerce reports?</summary>
+    <summary>Will archiving break my WooCommerce reports?</summary>
     <div class="faq-body">The plugin removes analytics cache rows from <code>wp_wc_order_stats</code> and related lookup tables when archiving. WooCommerce can regenerate these from order data via Analytics → Status → Re-import. Reports will reflect the archive once regenerated.</div>
   </details>
   <details>
-    <summary><i class="fa-solid fa-rotate-left"></i> Can I restore an order after archiving it?</summary>
+    <summary>Can I restore an order after archiving it?</summary>
     <div class="faq-body">Yes. Go to the Archived Orders tab, select Restore, and run the batch. The order comes back with its original ID, meta, items, notes, and refunds fully intact.</div>
   </details>
   <details>
-    <summary><i class="fa-solid fa-triangle-exclamation"></i> What happens if archiving fails halfway through?</summary>
+    <summary>What happens if archiving fails halfway through?</summary>
     <div class="faq-body">Each order is wrapped in a database transaction. If any step fails, the transaction rolls back for that order and it stays in the live tables unchanged. The activity log records the error with a message.</div>
   </details>
   <details>
-    <summary><i class="fa-solid fa-repeat"></i> Does this work with WooCommerce Subscriptions?</summary>
+    <summary>Does this work with WooCommerce Subscriptions?</summary>
     <div class="faq-body">Yes. The plugin detects active subscriptions and skips any order that is a renewal order or has an active subscription attached to it. This prevents breaking the billing chain.</div>
   </details>
   <details>
-    <summary><i class="fa-solid fa-server"></i> Is HPOS supported?</summary>
+    <summary>Is HPOS supported?</summary>
     <div class="faq-body">Not in version 1.0. If HPOS is enabled on your store, the plugin shows an admin notice and stays inactive. HPOS support is on the roadmap for a future release.</div>
   </details>
   <details>
-    <summary><i class="fa-solid fa-flask"></i> What is dry run mode?</summary>
+    <summary>What is dry run mode?</summary>
     <div class="faq-body">Dry run runs the full copy and verification process inside a transaction, then rolls everything back instead of committing. No data is changed. The activity log records the result as a dry run so you can see exactly what would have happened.</div>
   </details>
   <details>
-    <summary><i class="fa-solid fa-sliders"></i> Can I change the batch size?</summary>
+    <summary>Can I change the batch size?</summary>
     <div class="faq-body">Yes. Add this to your <code>functions.php</code> or a custom plugin:<br><br><code>add_filter( 'hw_woam_batch_size', function() { return 100; } );</code><br><br>The default is 50 orders per batch. Increase on fast servers, decrease on shared hosting if you see timeouts.</div>
   </details>
   <details>
-    <summary><i class="fa-solid fa-network-wired"></i> Does it support multisite?</summary>
+    <summary>Does it support multisite?</summary>
     <div class="faq-body">Not tested on multisite in version 1.0. Each site in a network has its own table prefix, so the plugin should create separate archive tables per site, but this has not been verified.</div>
   </details>
 </section>
@@ -965,12 +954,12 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-left">
-      Built by <a href="https://anandu39.github.io/Anandu-Ravikumar/" target="_blank" rel="noopener"><i class="fa-solid fa-code"></i> Anandu Ravikumar</a> &nbsp;·&nbsp; GPL-2.0-or-later
+      Built by <a href="https://anandu39.github.io/Anandu-Ravikumar/" target="_blank" rel="noopener">Anandu Ravikumar</a> &nbsp;·&nbsp; GPL-2.0-or-later
     </div>
     <div class="footer-right">
-      <a href="https://github.com/anandu39/woo-order-archive-manager" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
-      <a href="https://profiles.wordpress.org/ananduravi/" target="_blank" rel="noopener"><i class="fa-brands fa-wordpress"></i> WordPress.org</a>
-      <a href="https://anandu39.github.io/Anandu-Ravikumar/" target="_blank" rel="noopener"><i class="fa-solid fa-user"></i> Portfolio</a>
+      <a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://profiles.wordpress.org/ananduravi/" target="_blank" rel="noopener">WordPress.org</a>
+      <a href="https://anandu39.github.io/Anandu-Ravikumar/" target="_blank" rel="noopener">Portfolio</a>
     </div>
   </div>
 </footer>
