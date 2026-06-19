@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Woo Order Archive Manager — by Anandu Ravikumar</title>
+  <title>Order Archive Manager for WooCommerce — by Anandu Ravikumar</title>
   <meta name="description" content="Archive old WooCommerce orders into separate database tables to keep your store fast without losing any data." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -627,7 +627,7 @@
     <li><a href="#install">Install</a></li>
     <li><a href="#changelog">Changelog</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager" class="nav-cta" target="_blank" rel="noopener">GitHub ↗</a></li>
+    <li><a href="https://github.com/anandu39/order-archive-manager-for-woocommerce" class="nav-cta" target="_blank" rel="noopener">GitHub ↗</a></li>
   </ul>
 </nav>
 
@@ -636,13 +636,13 @@
   <div class="hero-badge">v1.0.0 — Initial Release</div>
   <h1>Your WooCommerce database,<br><span>finally lean</span></h1>
   <p class="hero-sub">
-    Woo Order Archive Manager moves old orders out of your live tables into dedicated archive tables — using transactions, verification, and dry-run safety. Your store gets faster. Your data stays safe.
+    Order Archive Manager for WooCommerce moves old orders out of your live tables into dedicated archive tables — using transactions, verification, and dry-run safety. Your store gets faster. Your data stays safe.
   </p>
   <div class="hero-actions">
-    <a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager/releases/latest" class="btn btn-primary" target="_blank" rel="noopener">
+    <a href="https://github.com/anandu39/order-archive-manager-for-woocommerce/releases/latest" class="btn btn-primary" target="_blank" rel="noopener">
       ↓ Download latest release
     </a>
-    <a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager" class="btn btn-ghost" target="_blank" rel="noopener">
+    <a href="https://github.com/anandu39/order-archive-manager-for-woocommerce" class="btn btn-ghost" target="_blank" rel="noopener">
       View on GitHub
     </a>
   </div>
@@ -786,7 +786,7 @@
   <div class="screenshots-note">
     <strong>Screenshots coming soon</strong>
     <p>Overview tab · Archive Orders flow · Archived Orders tab · Activity log</p>
-    <p style="margin-top:0.75rem; font-size:12px;">In the meantime, <a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager" style="color:var(--purple-mid);" target="_blank" rel="noopener">view the repository</a> for code and documentation.</p>
+    <p style="margin-top:0.75rem; font-size:12px;">In the meantime, <a href="https://github.com/anandu39/order-archive-manager-for-woocommerce" style="color:var(--purple-mid);" target="_blank" rel="noopener">view the repository</a> for code and documentation.</p>
   </div>
 </section>
 
@@ -889,10 +889,10 @@
 
       - <span class="key">name</span>: <span class="str">Build clean ZIP (no .git, no dev files)</span>
         <span class="key">run</span>: |
-          rsync -av ./ build/woo-order-archive-manager \
+          rsync -av ./ build/order-archive-manager-for-woocommerce \
             --exclude build --exclude .git --exclude .github \
             --exclude tests --exclude composer.json
-          cd build &amp;&amp; zip -r plugin.zip woo-order-archive-manager
+          cd build &amp;&amp; zip -r plugin.zip order-archive-manager-for-woocommerce
 
       - <span class="key">name</span>: <span class="str">Publish GitHub Release</span>
         <span class="key">uses</span>: <span class="str">softprops/action-gh-release@v2</span>
@@ -967,7 +967,7 @@
       Built by <a href="https://anandu39.github.io/Anandu-Ravikumar/" target="_blank" rel="noopener">Anandu Ravikumar</a> &nbsp;·&nbsp; GPL-2.0-or-later
     </div>
     <div class="footer-right">
-      <a href="https://github.com/anandu39/WooCommerce-Order-Archive-Manager" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/anandu39/order-archive-manager-for-woocommerce" target="_blank" rel="noopener">GitHub</a>
       <a href="https://profiles.wordpress.org/ananduravi/" target="_blank" rel="noopener">WordPress.org</a>
       <a href="https://anandu39.github.io/Anandu-Ravikumar/" target="_blank" rel="noopener">Portfolio</a>
     </div>
